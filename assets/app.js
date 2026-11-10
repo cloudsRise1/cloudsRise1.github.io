@@ -14,6 +14,20 @@
     const sections = Array.from(new Set(targets.map(({ section }) => section)))
       .filter(Boolean);
     let observer;
+    let requestedSection = null;
+    targets.forEach(({ link, section }) => {
+      link.addEventListener('click', () => {
+        requestedSection = section;
+        window.requestAnimationFrame(updateNavigation);
+      });
+    });
+    window.addEventListener('wheel', () => { requestedSection = null; }, { passive: true });
+    window.addEventListener('touchstart', () => { requestedSection = null; }, { passive: true });
+    window.addEventListener('keydown', (event) => {
+      if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(event.key)) {
+        requestedSection = null;
+      }
+    });
 
     function updateNavigation() {
       const anchorLine = Math.round(window.innerHeight * 0.2);
@@ -39,7 +53,7 @@
       const atBottom = Math.ceil(window.scrollY + window.innerHeight)
         >= document.documentElement.scrollHeight - 2;
       if (atBottom && window.scrollY > 0) {
-        current = sections[sections.length - 1] || current;
+        current = requestedSection || sections[sections.length - 1] || current;
       }
       targets.forEach(({ link, section }) => {
         if (current && section === current) {

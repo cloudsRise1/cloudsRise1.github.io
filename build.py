@@ -71,25 +71,14 @@ def time_value(value):
 def render_news(entries):
     if not entries:
         return '<p class="empty-state">Research updates will be shared here.</p>'
-
-    def items(rows):
-        return '<ul class="news-list">' + "".join(
-            "<li>"
-            + time_value(row.get("date"))
-            + "<span>"
-            + link(row.get("text", ""), row.get("url", ""))
-            + "</span></li>"
-            for row in rows
-        ) + "</ul>"
-
-    result = items(entries[:3])
-    if len(entries) > 3:
-        result += (
-            '<details class="earlier-news"><summary>Earlier updates</summary>'
-            + items(entries[3:])
-            + "</details>"
-        )
-    return result
+    return '<ul class="news-list" aria-label="Recent news">' + "".join(
+        "<li>"
+        + time_value(row.get("date"))
+        + ": &nbsp;"
+        + link(row.get("text", ""), row.get("url", ""))
+        + "</li>"
+        for row in entries
+    ) + "</ul>"
 
 
 def render_publications(entries):
@@ -112,12 +101,7 @@ def render_publications(entries):
                 'width="520" height="300" loading="lazy" decoding="async"></button>'
             )
         else:
-            visual = (
-                '<div class="pub-placeholder" aria-hidden="true">'
-                f'<span>{text(entry.get("venue") or "Research")}</span>'
-                f'<strong>{text(entry.get("shortTitle") or title.split(":")[0])}</strong>'
-                "</div>"
-            )
+            visual = ""
         role = (
             f'<span class="pub-role">{text(entry["role"])}</span>'
             if entry.get("role") else ""
@@ -138,22 +122,21 @@ def render_publications(entries):
         resources = "".join(
             link(label, entry[key])
             for key, label in (
-                ("paperUrl", "paper"), ("codeUrl", "code"), ("projectUrl", "project")
+                ("paperUrl", "[Paper]"), ("codeUrl", "[GitHub]"), ("projectUrl", "[Project]")
             )
             if entry.get(key)
         )
         summary = paragraphs(entry.get("summary", ""))
         rendered.append(
-            '<article class="pub-item">'
-            + visual
+            '<li class="pub-item">'
             + '<div class="pub-body"><h3 class="pub-title">'
             + link(title, entry.get("paperUrl") or entry.get("projectUrl", ""))
             + "</h3>"
             + authors + affiliation + summary
             + f'<div class="pub-meta">{venue}{status}{resources}</div>'
-            + "</div></article>"
+            + "</div>" + visual + "</li>"
         )
-    return '<div class="pub-list">' + "".join(rendered) + "</div>"
+    return '<ul class="pub-list">' + "".join(rendered) + "</ul>"
 
 
 def render_experience(entries):
@@ -226,29 +209,30 @@ def render(profile):
     contact = []
     email = str(profile.get("email") or "")
     if email:
-        contact.append(link(email, "mailto:" + email, "contact-email"))
-    socials = []
-    if profile.get("scholarUrl"):
-        socials.append(link("Google Scholar", profile["scholarUrl"]))
-    if profile.get("githubUsername"):
-        socials.append(
-            link("GitHub ↗", "https://github.com/" + profile["githubUsername"])
-        )
-    if socials:
         contact.append(
-            '<p class="contact-links">'
-            + '<span aria-hidden="true">·</span>'.join(socials) + "</p>"
+            f'<li><a class="contact-email" href="{url("mailto:" + email)}">'
+            + icon("mail") + "Email</a></li>"
+        )
+    if profile.get("scholarUrl"):
+        contact.append(
+            f'<li><a href="{url(profile["scholarUrl"])}">'
+            + icon("scholar") + "Google Scholar</a></li>"
+        )
+    if profile.get("githubUsername"):
+        contact.append(
+            f'<li><a href="{url("https://github.com/" + profile["githubUsername"])}">'
+            + icon("github") + "GitHub</a></li>"
         )
     portrait = profile.get("portrait", "")
     if portrait:
         portrait_html = (
             f'<img class="portrait" src="{url(portrait)}" alt="{text(name)}" '
-            'width="220" height="220" fetchpriority="high">'
+            'width="175" height="175" fetchpriority="high">'
         )
     else:
         portrait_html = (
             f'<div class="portrait profile-monogram" aria-label="{text(name)}">'
-            f'<span>{text(initials)}</span><small>RESEARCH &amp; EXPLORATION</small></div>'
+            f'<span>{text(initials)}</span></div>'
         )
     focus = "".join(f"<li>{text(value)}</li>" for value in profile.get("researchFocus", []))
     interests = "".join(f"<li>{text(value)}</li>" for value in profile.get("interests", []))
@@ -270,7 +254,7 @@ def render(profile):
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="{text(description)}">
-  <meta name="theme-color" content="#fbfaf7">
+  <meta name="theme-color" content="#ffffff">
   <meta property="og:type" content="website">
   <meta property="og:title" content="{text(name)} — Research">
   <meta property="og:description" content="{text(description)}">
@@ -283,51 +267,58 @@ def render(profile):
   <a class="skip-link" href="#about">Skip to content</a>
   <header class="site-header">
     <div class="header-inner">
-      <a class="site-name" href="#about"><span class="personal-name">{text(name)}</span></a>
+      <a class="site-name" href="#about">Homepage</a>
       <nav class="navigation" aria-label="Main navigation">
-        <a href="#about" aria-current="location">About</a>
+        <a href="#about" aria-current="location">About Me</a>
         <a href="#news">News</a>
         <a href="#publications">Publications</a>
         <a href="#internships">Experience</a>
         <a href="#education">Education</a>
+        <a href="#honors">Honors and Awards</a>
       </nav>
     </div>
   </header>
   <div class="page-shell">
-    <main id="about-me">
-      <section class="about-section" id="about" aria-labelledby="about-title">
-        <div class="profile">
-          {portrait_html}
-          <div class="profile-contact">{"".join(contact)}</div>
-        </div>
-        <div class="bio">
-          <h1 id="about-title">Hi, I'm <em class="personal-name">{text(name)}</em>.</h1>
+    <aside class="profile-sidebar" aria-label="Personal profile">
+      <div class="profile">
+        {portrait_html}
+        <div class="profile-content">
+          <h2 class="profile-name">{text(name)}</h2>
           <p class="profile-role">{text(profile.get("role"))}</p>
+          <ul class="contact-links">{"".join(contact)}</ul>
+        </div>
+      </div>
+    </aside>
+    <main id="about-me" class="page-content">
+      <section class="about-section" id="about" aria-labelledby="about-title">
+        <div class="bio">
+          <h1 id="about-title">👋 About Me</h1>
+          <p class="intro-name">Hi! I'm <strong>{text(name)}</strong>.</p>
           <div class="about-copy">{paragraphs(profile.get("bio", []))}</div>
           <div class="research-focus"><h2>Research focus</h2><ul>{focus}</ul></div>
         </div>
       </section>
       <section class="news-section" id="news" aria-labelledby="news-title">
-        {heading("news", "News & timeline")}
+        {heading("news", "🌟 News")}
         {render_news(profile.get("news", []))}
       </section>
       <section class="content-section" id="publications" aria-labelledby="publications-title">
-        {heading("publications", "Publications")}
+        {heading("publications", "📝 Publications")}
         {render_publications(profile.get("publications", []))}
       </section>
       <section class="content-section" id="internships" aria-labelledby="internships-title">
-        {heading("internships", "Experience")}
+        {heading("internships", "💼 Experience")}
         {render_experience(profile.get("experience", []))}
       </section>
       <section class="content-section" id="education" aria-labelledby="education-title">
-        {heading("education", "Education")}
+        {heading("education", "🎓 Education")}
         {render_education(profile.get("education", []))}
       </section>
       <section class="content-section additional" id="additional" aria-label="Research interests, tools, and honors">
-        <div id="interests"><h2>Research interests</h2><ul>{interests}</ul></div>
-        <div id="skills"><h2>Tools &amp; frameworks</h2><p>{tools}</p>
+        <div id="interests"><h2>🧭 Research Interests</h2><ul>{interests}</ul></div>
+        <div id="skills"><h2>🛠 Tools &amp; Frameworks</h2><p>{tools}</p>
           <p class="subtle">From research ideas to reproducible systems.</p></div>
-        <div class="honors" id="honors"><h2>Honors</h2>{honors_html}</div>
+        <div class="honors" id="honors"><h2 id="honors-title">🏆 Honors and Awards</h2>{honors_html}</div>
       </section>
       <footer><span class="personal-name">{text(name)} <span class="subtle">© <span data-current-year>{date.today().year}</span></span></span>
         <a href="#about">Back to top ↑</a></footer>
