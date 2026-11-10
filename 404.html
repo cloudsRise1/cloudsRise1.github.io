@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Page not found</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #faf9f6;
+      --ink: #192b45;
+      --muted: #566173;
+      --line: #e2e4e7;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100svh;
+      display: grid;
+      align-items: center;
+      background: var(--paper);
+      color: var(--ink);
+      font: 1rem/1.65 "Trebuchet MS", Helvetica, Arial, sans-serif;
+    }
+
+    main {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 72px 52px;
+    }
+
+    .status {
+      margin: 0 0 24px;
+      color: var(--muted);
+      font: 0.75rem/1.5 "SFMono-Regular", Consolas, monospace;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 20px;
+      font: 400 clamp(2.5rem, 6vw, 4rem)/1.15 Georgia, "Times New Roman", serif;
+      letter-spacing: -0.03em;
+    }
+
+    .message {
+      max-width: 34rem;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .recovery {
+      margin-top: 36px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 44px;
+      color: var(--ink);
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 5px;
+    }
+
+    a:hover { text-decoration-thickness: 2px; }
+
+    a:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 6px;
+    }
+
+    a svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    ::selection { background: #dce5ef; color: var(--ink); }
+
+    @media (max-width: 600px) {
+      main { padding: 48px 24px; }
+    }
+  </style>
+</head>
+<body>
+  <main aria-labelledby="page-title">
+    <p class="status">Error 404</p>
+    <h1 id="page-title">Page not found.</h1>
+    <p class="message">The link may be outdated, or the page may have moved. Return to the homepage to continue.</p>
+    <div class="recovery">
+      <a href="./">
+        Back to homepage
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="M6 18 18 6M6 6h12v12"/>
+        </svg>
+      </a>
+    </div>
+  </main>
+</body>
+</html>

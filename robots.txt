@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://cloudsrise1.github.io/sitemap.xml

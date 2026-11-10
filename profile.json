@@ -1,0 +1,39 @@
+{
+  "name": "cloudsRise1",
+  "nameZh": "",
+  "initials": "CR",
+  "role": "LLM & Multimodal Research",
+  "githubUsername": "cloudsRise1",
+  "email": "",
+  "scholarUrl": "",
+  "description": "Research interests in LLM post-training, on-policy distillation, reinforcement learning, long-video understanding, and evidence-aligned data synthesis.",
+  "bio": [
+    "My research interests include LLM post-training, on-policy distillation, and reinforcement learning.",
+    "I am also interested in long-video understanding and evidence-aligned data synthesis."
+  ],
+  "researchFocus": [
+    "LLM post-training",
+    "On-policy distillation",
+    "Reinforcement learning"
+  ],
+  "news": [
+    {
+      "date": "2026.11",
+      "text": "Launched my personal research homepage.",
+      "url": "https://github.com/cloudsRise1/cloudsRise1.github.io"
+    }
+  ],
+  "publications": [],
+  "experience": [],
+  "education": [],
+  "interests": [
+    "LLM post-training and reasoning",
+    "On-policy distillation",
+    "RLHF · RLVR · GRPO",
+    "Long-video understanding",
+    "Evidence-aligned data synthesis"
+  ],
+  "tools": [],
+  "honors": [],
+  "siteUrl": "https://cloudsrise1.github.io/"
+}

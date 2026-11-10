@@ -1,0 +1,16 @@
+# Generated site and Python cache
+_site/
+__pycache__/
+*.py[cod]
+
+# macOS metadata
+.DS_Store
+
+# Local environment and credentials
+.env*
+!.env.example
+!.env.sample
+credentials
+credentials.*
+*.pem
+*.key
