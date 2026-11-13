@@ -1,81 +1,112 @@
-# 个人主页
+# Personal Homepage
 
-在线主页：[cloudsrise1.github.io](https://cloudsrise1.github.io/) · 源码仓库：[cloudsRise1/cloudsRise1.github.io](https://github.com/cloudsRise1/cloudsRise1.github.io)
+Recorded homepage: [cloudsrise1.github.io](https://cloudsrise1.github.io/)
+ | Source repository: [cloudsRise1/cloudsRise1.github.io](https://github.com/cloudsRise1/cloudsRise1.github.io)
 
-面向 GitHub Pages 的独立静态个人主页，使用原生 HTML、CSS 和 JavaScript，不依赖前端框架、包管理器或第三方 Python 包。`profile.json` 保存个人资料，`build.py` 使用 Python 标准库生成站点，并支持可选的 `--output` 参数。
+A standalone static homepage for GitHub Pages, using native HTML, CSS, and
+JavaScript. `profile.json` stores the content, and `build.py` generates the
+site using the Python standard library, with an optional `--output` argument.
+No frontend framework, package manager, third-party Python packages, database,
+or API key is required.
 
-包含完整网页、可编辑资料、原生交互、移动端样式、404 页面与 GitHub Pages 自动部署工作流。无需数据库和 API key。
+## Revision Configuration
 
-## 设计与身份
+The page is English-only. Keep all visible profile text in English and
+`nameZh` empty. The current display name is `Kunze Jiang`.
 
-当前排版参考 [hbx-hbx.github.io](https://hbx-hbx.github.io/)：白色背景、左侧常驻个人资料、右侧正文、蓝色链接、带图标的章节标题与紧凑论文列表。手机端个人资料置顶，导航可横向滚动。仅借鉴排版，不复制参考站的肖像或个人履历。
+The research topics must be exactly these two strings, in this order:
 
-当前使用已授权的 GitHub 用户名 `cloudsRise1`；姓名、邮箱、论文和履历可在 `profile.json` 中补充。简介为按研究方向起草的文字，可自行调整。
+```json
+{
+  "researchFocus": ["VLM post-training", "Reinforcement learning"]
+}
+```
 
-## 本地预览
+Publication records remain in the single `publications` array:
 
-需要 Python 3；CI 使用 Python 3.12。无需执行 `pip install` 或安装 Node.js。
+- `authors` is an array of objects with `name` and optional boolean `equalContribution`, not a single author string. The owner name is rendered in bold when an author's `name` exactly matches the top-level `name`; equal contributors receive a `#` marker.
+- `category: "preprint"` selects **Selected Preprints**; `category: "publication"` selects **Selected Publications**. Published papers are grouped by `year`.
+- MOD / MOD-DiT, *Mixture of Distributions Matters: Dynamic Sparse Attention for Efficient Video Diffusion Transformers*, uses `category: "publication"`, `venue: "ICML 2026"`, `venueHighlight: true`, and `year: "2026"`.
+- HISD, *Hint-Informed Self-Distillation for Reasoning Segmentation*, remains `category: "preprint"`.
+- **Research Experience** is no longer rendered or linked in navigation. Retain `experience: []` for configuration compatibility; adding records does not restore the section.
 
-在项目根目录运行：
+See [CONTENT_GUIDE.md](CONTENT_GUIDE.md) for field definitions and revision
+examples. Layout inspiration is not a source of biographical facts.
+
+## Local Preview
+
+Python 3 is required; CI uses Python 3.12. No `pip install` or Node.js setup
+is needed. From the project root:
 
 ```bash
 python3 build.py
 python3 -m http.server 8000
 ```
 
-打开 <http://localhost:8000/>。第一个命令使用生成器的默认输出位置，第二个命令启动当前目录的静态文件服务；按 `Ctrl+C` 停止服务。
+Open <http://localhost:8000/>. The first command uses the generator's default
+output location; the second serves the current directory. Stop the server
+with `Ctrl+C`.
 
-也可以指定独立输出目录，与 CI 保持一致：
+To use a separate output directory, matching CI:
 
 ```bash
 python3 build.py --output _site
 python3 -m http.server 8000 --directory _site
 ```
 
-`_site/` 是生成产物，已加入 `.gitignore`。根目录的 `.nojekyll` 是静态站点标记；Actions 工作流直接上传生成目录，不执行 Jekyll。
+`_site/` contains generated output and is ignored by Git. `.nojekyll` marks
+the static site; the optional Actions workflow uploads the generated
+directory without running Jekyll.
 
-## 修改资料
+## Editing Content
 
-编辑 `profile.json` 中站点实现定义的字段，填写自己的资料，然后重新运行 `python3 build.py`。更换照片或其他资源时，将文件放入 `assets/` 并同步更新资料中的相对路径。
+Edit the supported fields in `profile.json`, then regenerate with
+`python3 build.py`. For approved local assets, place files in `assets/` and
+update their relative paths in the profile.
 
-保持 JSON 语法有效，不添加注释或末尾多余的逗号。主页生成后是公开内容；不要在资料、网页或资源中放入密码、令牌、私钥或未获授权的个人信息。`.gitignore` 不能代替内容检查。
+Use valid JSON without comments or trailing commas. Published content is
+public: do not include passwords, tokens, private keys, or unauthorized
+personal information. `.gitignore` is not a substitute for reviewing content.
 
 ## GitHub Pages
 
-支持两种仓库形式：
+The user requested `jiangkunze.github.io`. The main agent is investigating
+the GitHub account/repository namespace; this is a requested destination,
+not a confirmed current URL or a completed migration.
 
-- 用户主页：仓库名为 `USERNAME.github.io`，访问地址为 `https://USERNAME.github.io/`。
-- 项目主页：仓库名例如 `personal-homepage`，访问地址为 `https://USERNAME.github.io/personal-homepage/`。
+The current profile records `siteUrl: "https://cloudsrise1.github.io/"` and
+`githubUsername: "cloudsRise1"`. Keep `siteUrl` aligned with the actual
+published host, including any project path, and `githubUsername` aligned
+with the actual GitHub profile owner. Do not replace either field merely
+because a new hostname was requested. Update them only after the publishing
+destination and account ownership have been confirmed.
 
-将 `USERNAME` 替换为实际 GitHub 用户名。为兼容项目路径，站点实现中的样式、脚本、图片和内部链接应使用相对路径，例如 `assets/style.css`，避免以 `/assets/` 这样的域名根路径开头。`--output _site` 只指定构建目录，不会自动修正资源 URL。
+GitHub Pages supports:
 
-本站采用 **Settings → Pages → Deploy from a branch → main / (root)** 发布根目录的 `index.html`。本地修改 `profile.json` 后运行 `python3 build.py`，将更新的配置和网页推送到 `main`，GitHub Pages 会自动重新发布。
+- A user site: repository `USERNAME.github.io`, URL `https://USERNAME.github.io/`.
+- A project site: repository such as `personal-homepage`, URL `https://USERNAME.github.io/personal-homepage/`.
+- A custom domain: the confirmed full HTTPS URL.
 
-源码包额外提供可选的 Actions 构建工作流，当前线上仓库使用主分支发布方式。若要启用自动资料构建，将 `.github/workflows/pages.yml` 上传到仓库（GitHub CLI 需要 `workflow` scope），再将 **Build and deployment → Source** 设为 **GitHub Actions**；此时只修改 `profile.json` 并推送即可自动生成网页并部署，也可以在 **Actions → Deploy GitHub Pages → Run workflow** 手动触发。
+`USERNAME` is an example placeholder, not an instruction to rename the
+account. Styles, scripts, images, and internal links should use relative
+paths such as `assets/style.css`, avoiding `/assets/` for project sites.
+`--output _site` selects a build directory; it does not configure a hostname
+or automatically rewrite asset URLs.
 
-工作流只使用 GitHub 官方稳定版本的 Actions：检出源码、配置 Python、配置 Pages、上传 `_site/`，最后部署到 `github-pages` 环境。它授予 `contents: read`、`pages: write`、`id-token: write` 权限；部署并发组为 `pages`，不会取消正在执行的部署。
+The recorded deployment setup is **Settings > Pages > Deploy from a branch >
+main / (root)**, publishing the generated root `index.html`. In that mode,
+content updates require regenerating the page before publishing the updated
+configuration and output to `main`.
 
-### 仓库命令示例
+An optional `.github/workflows/pages.yml` workflow supports automatic
+generation from `profile.json`. To use it, the repository must contain the
+workflow and **Build and deployment > Source** must be **GitHub Actions**.
+Uploading a workflow with GitHub CLI requires the `workflow` scope. The
+workflow builds `_site/` and deploys it to the `github-pages` environment;
+it can also be triggered with **Actions > Deploy GitHub Pages > Run workflow**.
+It uses `contents: read`, `pages: write`, and `id-token: write`, with deployment
+concurrency group `pages` and without canceling an active deployment.
 
-以下为首次部署命令。需要已安装并登录 GitHub CLI。公开仓库会公开源码，包括 `profile.json`。
-
-用户主页示例，假设这是尚未初始化 Git 的新目录：
-
-```bash
-cd /Users/bytedance/项目/personal-homepage
-gh auth login
-git init -b main
-git add README.md CONTENT_GUIDE.md .gitignore .nojekyll .github/workflows/pages.yml build.py profile.json index.html 404.html assets/
-git commit -m "Initialize personal homepage"
-gh repo create USERNAME.github.io --public --source=. --remote=origin
-git push -u origin main
-```
-
-项目主页使用相同的初始化、检查和提交步骤，将创建仓库的命令替换为：
-
-```bash
-gh repo create personal-homepage --public --source=. --remote=origin
-git push -u origin main
-```
-
-创建仓库后，按前述说明选择主分支或可选的 GitHub Actions 作为 Pages 来源。
+Namespace investigation and deployment changes belong to the main agent.
+This documentation revision does not create repositories, change Pages
+settings, build the site, or publish a migration.

@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Kunze Jiang is a master&#x27;s student at the University of Science and Technology of China, researching multimodal reasoning, self-distillation, reinforcement learning, and efficient video generation.">
+  <meta name="description" content="Kunze Jiang is a master&#x27;s student at the University of Science and Technology of China, researching VLM post-training and reinforcement learning.">
   <meta name="theme-color" content="#ffffff">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Kunze Jiang — Research">
-  <meta property="og:description" content="Kunze Jiang is a master&#x27;s student at the University of Science and Technology of China, researching multimodal reasoning, self-distillation, reinforcement learning, and efficient video generation.">
+  <meta property="og:description" content="Kunze Jiang is a master&#x27;s student at the University of Science and Technology of China, researching VLM post-training and reinforcement learning.">
   <meta name="twitter:card" content="summary">
   <link rel="canonical" href="https://cloudsrise1.github.io/">
   <meta property="og:url" content="https://cloudsrise1.github.io/">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "name": "Kunze Jiang", "url": "https://cloudsrise1.github.io/", "description": "Kunze Jiang is a master's student at the University of Science and Technology of China, researching multimodal reasoning, self-distillation, reinforcement learning, and efficient video generation.", "sameAs": ["https://github.com/cloudsRise1"]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "name": "Kunze Jiang", "url": "https://cloudsrise1.github.io/", "description": "Kunze Jiang is a master's student at the University of Science and Technology of China, researching VLM post-training and reinforcement learning.", "sameAs": ["https://github.com/cloudsRise1"]}</script>
   <title>Kunze Jiang — Research</title>
   <link rel="stylesheet" href="./assets/style.css">
   <script src="./assets/app.js" defer></script>
@@ -25,8 +25,8 @@
         <a href="#about" aria-current="location">About me</a>
         <a href="#news">News</a>
         <a href="#education">Education</a>
-        <a href="#internships">Experiences</a>
-        <a href="#publications">Selected Preprints</a>
+        <a href="#preprints">Selected Preprints</a>
+        <a href="#publications">Selected Publications</a>
 
       </nav>
     </div>
@@ -46,8 +46,8 @@
       <section class="about-section" id="about" aria-labelledby="about-title">
         <div class="bio">
           <h1 id="about-title">About Me</h1>
-          <div class="about-copy"><p>I am currently pursuing an M.Eng. in Computer Technology at the University of Science and Technology of China (USTC, 2025–2028). I received my B.Eng. in Computer Science and Technology from Jiangxi Normal University (2021–2025).</p><p>My research interests include LLM post-training, on-policy distillation, and reinforcement learning.</p><p>My recent work explores hint-informed self-distillation for reasoning segmentation and dynamic sparse attention for efficient video diffusion transformers.</p></div>
-          <div class="research-focus"><h2>Research Interests:</h2><ul><li>LLM post-training</li><li>On-policy distillation</li><li>Reinforcement learning</li></ul></div>
+          <div class="about-copy"><p>I am currently pursuing an M.Eng. in Computer Technology at the University of Science and Technology of China (USTC, 2025–2028). I received my B.Eng. in Computer Science and Technology from Jiangxi Normal University (2021–2025).</p><p>My research interests include VLM post-training and reinforcement learning.</p></div>
+          <div class="research-focus"><h2>Research Interests:</h2><ul><li>VLM post-training</li><li>Reinforcement learning</li></ul></div>
         </div>
       </section>
       <section class="news-section" id="news" aria-labelledby="news-title">
@@ -56,12 +56,15 @@
       </section>
       <section class="content-section" id="education" aria-labelledby="education-title">
         <div class="section-heading"><h2 id="education-title">📖 Education</h2></div>
-        <ul class="education-list"><li class="education-row"><div class="entry-heading"><strong>2025 - 2028</strong><span class="entry-divider" aria-hidden="true"> | </span><strong>M.Eng. in Computer Technology (计算机技术)</strong></div><div><a href="https://www.ustc.edu.cn/">University of Science and Technology of China (中国科学技术大学)</a></div></li><li class="education-row"><div class="entry-heading"><strong>2021 - 2025</strong><span class="entry-divider" aria-hidden="true"> | </span><strong>B.Eng. in Computer Science and Technology (计算机科学与技术)</strong></div><div><a href="https://www.jxnu.edu.cn/">Jiangxi Normal University (江西师范大学)</a></div></li></ul>
+        <ul class="education-list"><li class="education-row"><div class="entry-heading"><strong>2025 - 2028</strong><span class="entry-divider" aria-hidden="true"> | </span><strong>M.Eng. in Computer Technology</strong></div><div><a href="https://www.ustc.edu.cn/">University of Science and Technology of China</a></div></li><li class="education-row"><div class="entry-heading"><strong>2021 - 2025</strong><span class="entry-divider" aria-hidden="true"> | </span><strong>B.Eng. in Computer Science and Technology</strong></div><div><a href="https://www.jxnu.edu.cn/">Jiangxi Normal University</a></div></li></ul>
       </section>
-      <section class="content-section" id="internships" aria-labelledby="internships-title"><div class="section-heading"><h2 id="internships-title">💻 Research Experience</h2></div><ul class="experience-list"><li class="research-entry"><div class="entry-heading"><strong>2026.11</strong><span class="entry-divider" aria-hidden="true"> | </span><strong><a href="https://arxiv.org/abs/2611.14931">HISD: Hint-Informed Self-Distillation</a></strong></div><div class="internship-role">– Research on Reasoning Segmentation · Co-first Author</div><p>Uses offline Segment Hints and a hint-conditioned EMA teacher for token-level credit assignment, improving target disambiguation while encouraging concise reasoning.</p><p>Requires neither hints nor a teacher at inference.</p></li><li class="research-entry"><div class="entry-heading"><strong>2026.01</strong><span class="entry-divider" aria-hidden="true"> | </span><strong><a href="https://arxiv.org/abs/2601.11641">MOD-DiT: Mixture-of-Distribution DiT</a></strong></div><div class="internship-role">– Research on Efficient Video Generation · Co-author</div><p>Introduces sampling-free dynamic sparse attention for video diffusion transformers.</p><p>Predicts evolving attention patterns from early denoising steps and applies online block masking to accelerate video generation while preserving quality.</p></li></ul></section>
+      <section class="content-section" id="preprints" aria-labelledby="preprints-title">
+        <div class="section-heading"><h2 id="preprints-title">📝 Selected Preprints</h2></div>
+        <p class="publication-note"><sup>#</sup> for equal contribution. <em>Recent representative preprints.</em></p><ul class="pub-list"><li class="pub-item"><div class="pub-body"><h3 class="pub-title"><strong><a href="https://arxiv.org/abs/2611.14931">Hint-Informed Self-Distillation for Reasoning Segmentation</a></strong></h3><div class="pub-authors"><strong>Kunze Jiang</strong><sup aria-label="equal contribution">#</sup>, Yuchen Wang<sup aria-label="equal contribution">#</sup>, Kang Li, Qixing Zhang.</div><div class="pub-meta"><span class="pub-badge">arXiv preprint, 2026</span><a href="https://arxiv.org/abs/2611.14931">[Paper]</a><a href="https://arxiv.org/pdf/2611.14931">[PDF]</a></div></div></li></ul>
+      </section>
       <section class="content-section" id="publications" aria-labelledby="publications-title">
-        <div class="section-heading"><h2 id="publications-title">📝 Selected Preprints</h2></div>
-        <p class="publication-note"><sup>#</sup> for equal contribution. <em>Recent representative preprints.</em></p><ul class="pub-list"><li class="pub-item"><div class="pub-body"><h3 class="pub-title"><a href="https://arxiv.org/abs/2611.14931">Hint-Informed Self-Distillation for Reasoning Segmentation</a></h3><div class="pub-authors"><strong>Kunze Jiang</strong><sup aria-label="equal contribution">#</sup>, Yuchen Wang<sup aria-label="equal contribution">#</sup>, Kang Li, Qixing Zhang.</div><div class="pub-meta"><span class="pub-badge">arXiv preprint, 2026</span><a href="https://arxiv.org/abs/2611.14931">[Paper]</a><a href="https://arxiv.org/pdf/2611.14931">[PDF]</a></div></div></li><li class="pub-item"><div class="pub-body"><h3 class="pub-title"><a href="https://arxiv.org/abs/2601.11641">Mixture of Distributions Matters: Dynamic Sparse Attention for Efficient Video Diffusion Transformers</a></h3><div class="pub-authors">Yuxi Liu, Yipeng Hu, Zekun Zhang, <strong>Kunze Jiang</strong>, Kun Yuan.</div><div class="pub-meta"><span class="pub-badge">arXiv preprint, 2026</span><a href="https://arxiv.org/abs/2601.11641">[Paper]</a><a href="https://arxiv.org/pdf/2601.11641">[PDF]</a></div></div></li></ul>
+        <div class="section-heading"><h2 id="publications-title">📝 Selected Publications</h2></div>
+        <h3 class="publication-year">2026</h3><ul class="pub-list"><li class="pub-item"><div class="pub-body"><h3 class="pub-title"><strong><a href="https://arxiv.org/abs/2601.11641">Mixture of Distributions Matters: Dynamic Sparse Attention for Efficient Video Diffusion Transformers</a></strong></h3><div class="pub-authors">Yuxi Liu, Yipeng Hu, Zekun Zhang, <strong>Kunze Jiang</strong>, Kun Yuan.</div><div class="pub-meta"><span class="pub-badge pub-venue-highlight">ICML 2026</span><a href="https://arxiv.org/abs/2601.11641">[Paper]</a><a href="https://arxiv.org/pdf/2601.11641">[PDF]</a></div></div></li></ul>
       </section>
 
       <footer><span class="personal-name">Kunze Jiang <span class="subtle">© <span data-current-year>2026</span></span></span>

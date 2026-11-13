@@ -5,6 +5,9 @@
   --muted: #7a8288;
   --link: #224b8d;
   --link-hover: #142d55;
+  --venue-red: #c00000;
+  --author-color: #555555;
+  --citation-size: 12.6px;
   --line: #f2f3f3;
   --nav-active: #bdc1c4;
   --news-background: #fafafa;
@@ -33,6 +36,8 @@
   --heading-size: 18px;
   --entry-size: 15.3px;
   --entry-space: 7.65px;
+  --publication-year-size: 15px;
+  --publication-year-space: 7.5px;
   --section-space: 18px;
   --list-inset: 30.6px;
 }
@@ -235,8 +240,14 @@ sup { position: relative; top: -0.5em; font-size: 75%; line-height: 0; vertical-
   padding-left: var(--list-inset);
 }
 .publication-note { margin-bottom: var(--space-md); font-size: var(--entry-size); }
+.publication-year {
+  margin: calc(var(--publication-year-space) * 2) 0 var(--publication-year-space);
+  font-size: var(--publication-year-size);
+  font-weight: 700;
+}
 .pub-title { font-size: var(--entry-size); line-height: 1.5; font-weight: 700; }
-.pub-authors { font-size: var(--entry-size); line-height: 1.5; }
+.pub-title a, a.pub-title { font-weight: 700; text-decoration: underline; }
+.pub-authors { color: var(--author-color); font-size: var(--citation-size); line-height: 1.5; }
 .pub-role { font-size: 13px; color: var(--muted); }
 .pub-role::before { content: " · "; }
 .pub-affiliation { color: var(--muted); font-size: 14px; }
@@ -245,10 +256,11 @@ sup { position: relative; top: -0.5em; font-size: 75%; line-height: 0; vertical-
   flex-wrap: wrap;
   align-items: baseline;
   gap: var(--space-xs) var(--space-sm);
-  font-size: var(--entry-size);
+  font-size: var(--citation-size);
   margin-top: var(--entry-space);
 }
 .pub-badge { font-style: italic; flex-basis: 100%; }
+.pub-venue-highlight { color: var(--venue-red); font-weight: 700; font-style: normal; }
 .pub-dot { color: var(--muted); font-size: 13px; }
 .pub-body > p { margin-top: var(--space-sm); font-size: 15px; }
 .pub-teaser {

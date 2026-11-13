@@ -6,15 +6,13 @@
   "githubUsername": "cloudsRise1",
   "email": "",
   "scholarUrl": "",
-  "description": "Kunze Jiang is a master's student at the University of Science and Technology of China, researching multimodal reasoning, self-distillation, reinforcement learning, and efficient video generation.",
+  "description": "Kunze Jiang is a master's student at the University of Science and Technology of China, researching VLM post-training and reinforcement learning.",
   "bio": [
     "I am currently pursuing an M.Eng. in Computer Technology at the University of Science and Technology of China (USTC, 2025–2028). I received my B.Eng. in Computer Science and Technology from Jiangxi Normal University (2021–2025).",
-    "My research interests include LLM post-training, on-policy distillation, and reinforcement learning.",
-    "My recent work explores hint-informed self-distillation for reasoning segmentation and dynamic sparse attention for efficient video diffusion transformers."
+    "My research interests include VLM post-training and reinforcement learning."
   ],
   "researchFocus": [
-    "LLM post-training",
-    "On-policy distillation",
+    "VLM post-training",
     "Reinforcement learning"
   ],
   "news": [
@@ -38,6 +36,7 @@
         {"name": "Kang Li"},
         {"name": "Qixing Zhang"}
       ],
+      "category": "preprint",
       "venue": "arXiv preprint, 2026",
       "paperUrl": "https://arxiv.org/abs/2611.14931",
       "pdfUrl": "https://arxiv.org/pdf/2611.14931"
@@ -51,55 +50,34 @@
         {"name": "Kunze Jiang"},
         {"name": "Kun Yuan"}
       ],
-      "venue": "arXiv preprint, 2026",
+      "category": "publication",
+      "venue": "ICML 2026",
+      "venueHighlight": true,
+      "year": "2026",
       "paperUrl": "https://arxiv.org/abs/2601.11641",
       "pdfUrl": "https://arxiv.org/pdf/2601.11641"
     }
   ],
-  "experience": [
-    {
-      "date": "2026.11",
-      "company": "HISD: Hint-Informed Self-Distillation",
-      "role": "Research on Reasoning Segmentation · Co-first Author",
-      "url": "https://arxiv.org/abs/2611.14931",
-      "description": [
-        "Uses offline Segment Hints and a hint-conditioned EMA teacher for token-level credit assignment, improving target disambiguation while encouraging concise reasoning.",
-        "Requires neither hints nor a teacher at inference."
-      ]
-    },
-    {
-      "date": "2026.01",
-      "company": "MOD-DiT: Mixture-of-Distribution DiT",
-      "role": "Research on Efficient Video Generation · Co-author",
-      "url": "https://arxiv.org/abs/2601.11641",
-      "description": [
-        "Introduces sampling-free dynamic sparse attention for video diffusion transformers.",
-        "Predicts evolving attention patterns from early denoising steps and applies online block masking to accelerate video generation while preserving quality."
-      ]
-    }
-  ],
+  "experience": [],
   "education": [
     {
-      "school": "University of Science and Technology of China (中国科学技术大学)",
-      "degree": "M.Eng. in Computer Technology (计算机技术)",
+      "school": "University of Science and Technology of China",
+      "degree": "M.Eng. in Computer Technology",
       "start": "2025",
       "end": "2028",
       "url": "https://www.ustc.edu.cn/"
     },
     {
-      "school": "Jiangxi Normal University (江西师范大学)",
-      "degree": "B.Eng. in Computer Science and Technology (计算机科学与技术)",
+      "school": "Jiangxi Normal University",
+      "degree": "B.Eng. in Computer Science and Technology",
       "start": "2021",
       "end": "2025",
       "url": "https://www.jxnu.edu.cn/"
     }
   ],
   "interests": [
-    "LLM post-training and reasoning",
-    "On-policy distillation",
-    "RLHF · RLVR · GRPO",
-    "Long-video understanding",
-    "Evidence-aligned data synthesis"
+    "VLM post-training",
+    "Reinforcement learning"
   ],
   "tools": [],
   "honors": [],

@@ -94,7 +94,7 @@ def render_authors(authors, owner):
     return ", ".join(rendered) + "."
 
 
-def render_publications(entries, owner=""):
+def render_publications(entries, owner="", preprint_note=True):
     if not entries:
         return (
             '<p class="empty-state">A selected list of papers and open-source '
@@ -115,20 +115,20 @@ def render_publications(entries, owner=""):
             )
         else:
             visual = ""
-        role = (
-            f'<span class="pub-role">{text(entry["role"])}</span>'
-            if entry.get("role") else ""
-        )
         authors = (
             '<div class="pub-authors">'
-            + render_authors(entry.get("authors"), owner) + role + "</div>"
+            + render_authors(entry.get("authors"), owner) + "</div>"
         )
         affiliation = (
             f'<div class="pub-affiliation">{text(entry["affiliation"])}</div>'
             if entry.get("affiliation") else ""
         )
+        venue_class = (
+            "pub-badge pub-venue-highlight" if entry.get("venueHighlight")
+            else "pub-badge"
+        )
         venue = (
-            f'<span class="pub-badge">{text(entry["venue"])}</span>'
+            f'<span class="{venue_class}">{text(entry["venue"])}</span>'
             if entry.get("venue") else ""
         )
         status = (
@@ -146,17 +146,17 @@ def render_publications(entries, owner=""):
         summary = paragraphs(entry.get("summary", ""))
         rendered.append(
             '<li class="pub-item">'
-            + '<div class="pub-body"><h3 class="pub-title">'
+            + '<div class="pub-body"><h3 class="pub-title"><strong>'
             + link(title, entry.get("paperUrl") or entry.get("projectUrl", ""))
-            + "</h3>"
+            + "</strong></h3>"
             + authors + affiliation + summary
             + f'<div class="pub-meta">{venue}{status}{resources}</div>'
             + "</div>" + visual + "</li>"
         )
-    equal_contribution = any(
+    equal_contribution = preprint_note and any(
         author.get("equalContribution")
         for entry in entries
-        for author in entry.get("authors", [])
+        for author in (entry.get("authors") or [])
         if isinstance(author, dict)
     )
     note = (
@@ -167,25 +167,29 @@ def render_publications(entries, owner=""):
     return note + '<ul class="pub-list">' + "".join(rendered) + "</ul>"
 
 
-def render_experience(entries):
+def render_publications_by_year(entries, owner=""):
     if not entries:
-        return '<p class="empty-state">Professional and research experience will be added here.</p>'
-    rows = []
+        return render_publications(entries, owner, preprint_note=False)
+    years = {}
     for entry in entries:
-        company = entry.get("company", "")
-        period = entry.get("date") or (
-            str(entry.get("start") or "") + " - " + str(entry.get("end") or "Present")
+        year = str(entry.get("year") or "").strip()
+        years.setdefault(year, []).append(entry)
+    return "".join(
+        f'<h3 class="publication-year">{text(year or "Undated")}</h3>'
+        + render_publications(years[year], owner, preprint_note=False)
+        for year in sorted(years, reverse=True)
+    )
+
+
+def split_publications(entries):
+    preprints, publications = [], []
+    for entry in entries:
+        selected = (
+            publications if entry.get("category", "preprint") == "publication"
+            else preprints
         )
-        rows.append(
-            '<li class="research-entry">'
-            f'<div class="entry-heading"><strong>{text(period)}</strong>'
-            '<span class="entry-divider" aria-hidden="true"> | </span>'
-            f'<strong>{link(company, entry.get("url", ""))}</strong></div>'
-            f'<div class="internship-role">– {text(entry.get("role"))}</div>'
-            + paragraphs(entry.get("description", []))
-            + "</li>"
-        )
-    return '<ul class="experience-list">' + "".join(rows) + "</ul>"
+        selected.append(entry)
+    return preprints, publications
 
 
 def render_education(entries):
@@ -277,15 +281,7 @@ def render(profile):
         ) + "</ul>"
         if honors else '<p class="empty-state">Selected honors will be added here.</p>'
     )
-    experience_nav = (
-        '<a href="#internships">Experiences</a>' if profile.get("experience") else ""
-    )
-    experience_section = (
-        '<section class="content-section" id="internships" aria-labelledby="internships-title">'
-        + heading("internships", "💻 Research Experience")
-        + render_experience(profile["experience"]) + "</section>"
-        if profile.get("experience") else ""
-    )
+    preprints, publications = split_publications(profile.get("publications", []))
     extras = []
     if profile.get("tools"):
         extras.append(
@@ -325,8 +321,8 @@ def render(profile):
         <a href="#about" aria-current="location">About me</a>
         <a href="#news">News</a>
         <a href="#education">Education</a>
-        {experience_nav}
-        <a href="#publications">Selected Preprints</a>
+        <a href="#preprints">Selected Preprints</a>
+        <a href="#publications">Selected Publications</a>
         {honors_nav}
       </nav>
     </div>
@@ -358,10 +354,13 @@ def render(profile):
         {heading("education", "📖 Education")}
         {render_education(profile.get("education", []))}
       </section>
-      {experience_section}
+      <section class="content-section" id="preprints" aria-labelledby="preprints-title">
+        {heading("preprints", "📝 Selected Preprints")}
+        {render_publications(preprints, name)}
+      </section>
       <section class="content-section" id="publications" aria-labelledby="publications-title">
-        {heading("publications", "📝 Selected Preprints")}
-        {render_publications(profile.get("publications", []), name)}
+        {heading("publications", "📝 Selected Publications")}
+        {render_publications_by_year(publications, name)}
       </section>
       {extra_section}
       <footer><span class="personal-name">{text(name)} <span class="subtle">© <span data-current-year>{date.today().year}</span></span></span>

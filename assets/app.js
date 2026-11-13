@@ -14,7 +14,17 @@
     const sections = Array.from(new Set(targets.map(({ section }) => section)))
       .filter(Boolean);
     let observer;
-    let requestedSection = null;
+    function sectionForFragment() {
+      try {
+        const id = decodeURIComponent(window.location.hash.slice(1));
+        const target = id ? document.getElementById(id) : null;
+        return sections.find((section) => section === target || section.contains(target)) || null;
+      } catch {
+        return null;
+      }
+    }
+
+    let requestedSection = sectionForFragment();
     targets.forEach(({ link, section }) => {
       link.addEventListener('click', () => {
         requestedSection = section;
@@ -52,7 +62,10 @@
       current = current || first;
       const atBottom = Math.ceil(window.scrollY + window.innerHeight)
         >= document.documentElement.scrollHeight - 2;
-      if (atBottom && window.scrollY > 0) {
+      const cannotScroll = document.documentElement.scrollHeight <= window.innerHeight + 2;
+      if (cannotScroll && requestedSection) {
+        current = requestedSection;
+      } else if (atBottom && window.scrollY > 0) {
         current = requestedSection || sections[sections.length - 1] || current;
       }
       targets.forEach(({ link, section }) => {
@@ -95,9 +108,14 @@
     } else {
       window.addEventListener('resize', updateNavigation, { passive: true });
     }
-    window.addEventListener('hashchange', updateNavigation);
+    function updateFragmentNavigation() {
+      requestedSection = sectionForFragment();
+      updateNavigation();
+    }
+
+    window.addEventListener('hashchange', updateFragmentNavigation);
     window.addEventListener('load', updateNavigation, { once: true });
-    window.addEventListener('pageshow', updateNavigation);
+    window.addEventListener('pageshow', updateFragmentNavigation);
   }
 
   function initializeFigures() {
