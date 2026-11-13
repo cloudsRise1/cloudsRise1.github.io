@@ -81,7 +81,20 @@ def render_news(entries):
     ) + "</ul>"
 
 
-def render_publications(entries):
+def render_authors(authors, owner):
+    if not isinstance(authors, list):
+        return text(authors)
+    rendered = []
+    for author in authors:
+        name = author.get("name", "")
+        label = f"<strong>{text(name)}</strong>" if name == owner else text(name)
+        if author.get("equalContribution"):
+            label += '<sup aria-label="equal contribution">#</sup>'
+        rendered.append(label)
+    return ", ".join(rendered) + "."
+
+
+def render_publications(entries, owner=""):
     if not entries:
         return (
             '<p class="empty-state">A selected list of papers and open-source '
@@ -106,7 +119,10 @@ def render_publications(entries):
             f'<span class="pub-role">{text(entry["role"])}</span>'
             if entry.get("role") else ""
         )
-        authors = f'<div class="pub-authors">{text(entry.get("authors"))} {role}</div>'
+        authors = (
+            '<div class="pub-authors">'
+            + render_authors(entry.get("authors"), owner) + role + "</div>"
+        )
         affiliation = (
             f'<div class="pub-affiliation">{text(entry["affiliation"])}</div>'
             if entry.get("affiliation") else ""
@@ -122,7 +138,8 @@ def render_publications(entries):
         resources = "".join(
             link(label, entry[key])
             for key, label in (
-                ("paperUrl", "[Paper]"), ("codeUrl", "[GitHub]"), ("projectUrl", "[Project]")
+                ("paperUrl", "[Paper]"), ("pdfUrl", "[PDF]"),
+                ("codeUrl", "[GitHub]"), ("projectUrl", "[Homepage]")
             )
             if entry.get(key)
         )
@@ -136,7 +153,18 @@ def render_publications(entries):
             + f'<div class="pub-meta">{venue}{status}{resources}</div>'
             + "</div>" + visual + "</li>"
         )
-    return '<ul class="pub-list">' + "".join(rendered) + "</ul>"
+    equal_contribution = any(
+        author.get("equalContribution")
+        for entry in entries
+        for author in entry.get("authors", [])
+        if isinstance(author, dict)
+    )
+    note = (
+        '<p class="publication-note"><sup>#</sup> for equal contribution. '
+        "<em>Recent representative preprints.</em></p>"
+        if equal_contribution else ""
+    )
+    return note + '<ul class="pub-list">' + "".join(rendered) + "</ul>"
 
 
 def render_experience(entries):
@@ -145,19 +173,19 @@ def render_experience(entries):
     rows = []
     for entry in entries:
         company = entry.get("company", "")
-        initials = "".join(word[0] for word in company.split()[:2] if word).upper()
-        rows.append(
-            '<article class="internship-card">'
-            f'<div class="internship-logo company-monogram" aria-hidden="true">{text(initials)}</div>'
-            '<div class="internship-body"><div class="internship-head"><div>'
-            f'<h3 class="internship-company">{link(company, entry.get("url", ""))}</h3>'
-            f'<div class="internship-role">{text(entry.get("role"))}</div></div>'
-            f'<div class="internship-time">{text(entry.get("start"))} — '
-            f'{text(entry.get("end") or "Present")}</div></div>'
-            + paragraphs(entry.get("description", []))
-            + "</div></article>"
+        period = entry.get("date") or (
+            str(entry.get("start") or "") + " - " + str(entry.get("end") or "Present")
         )
-    return '<div class="internship-list">' + "".join(rows) + "</div>"
+        rows.append(
+            '<li class="research-entry">'
+            f'<div class="entry-heading"><strong>{text(period)}</strong>'
+            '<span class="entry-divider" aria-hidden="true"> | </span>'
+            f'<strong>{link(company, entry.get("url", ""))}</strong></div>'
+            f'<div class="internship-role">– {text(entry.get("role"))}</div>'
+            + paragraphs(entry.get("description", []))
+            + "</li>"
+        )
+    return '<ul class="experience-list">' + "".join(rows) + "</ul>"
 
 
 def render_education(entries):
@@ -166,18 +194,20 @@ def render_education(entries):
     rows = []
     for entry in entries:
         advisor = (
-            '<p class="subtle">Advisor · '
+            '<p class="subtle">Advisor: '
             + link(entry["advisor"], entry.get("advisorUrl", "")) + "</p>"
             if entry.get("advisor") else ""
         )
         rows.append(
-            '<article class="education-row">'
-            f'<div class="education-date">{text(entry.get("start"))} — '
-            f'{text(entry.get("end"))}</div><div>'
-            f'<h3>{link(entry.get("school"), entry.get("url", ""))}</h3>'
-            f'<p>{text(entry.get("degree"))}</p>{advisor}</div></article>'
+            '<li class="education-row">'
+            f'<div class="entry-heading"><strong>{text(entry.get("start"))} - '
+            f'{text(entry.get("end"))}</strong>'
+            '<span class="entry-divider" aria-hidden="true"> | </span>'
+            f'<strong>{text(entry.get("degree"))}</strong></div>'
+            f'<div>{link(entry.get("school"), entry.get("url", ""))}</div>'
+            f'{advisor}</li>'
         )
-    return "".join(rows)
+    return '<ul class="education-list">' + "".join(rows) + "</ul>"
 
 
 def render(profile):
@@ -235,7 +265,6 @@ def render(profile):
             f'<span>{text(initials)}</span></div>'
         )
     focus = "".join(f"<li>{text(value)}</li>" for value in profile.get("researchFocus", []))
-    interests = "".join(f"<li>{text(value)}</li>" for value in profile.get("interests", []))
     tools = (
         text(" · ".join(profile.get("tools", [])))
         or '<span class="subtle">Selected tools and frameworks will be added here.</span>'
@@ -248,6 +277,30 @@ def render(profile):
         ) + "</ul>"
         if honors else '<p class="empty-state">Selected honors will be added here.</p>'
     )
+    experience_nav = (
+        '<a href="#internships">Experiences</a>' if profile.get("experience") else ""
+    )
+    experience_section = (
+        '<section class="content-section" id="internships" aria-labelledby="internships-title">'
+        + heading("internships", "💻 Research Experience")
+        + render_experience(profile["experience"]) + "</section>"
+        if profile.get("experience") else ""
+    )
+    extras = []
+    if profile.get("tools"):
+        extras.append(
+            f'<div id="skills"><h2>Tools &amp; Frameworks</h2><p>{tools}</p></div>'
+        )
+    if honors:
+        extras.append(
+            '<div class="honors" id="honors"><h2 id="honors-title">'
+            f'Honors &amp; Awards</h2>{honors_html}</div>'
+        )
+    extra_section = (
+        '<section class="content-section additional" id="additional">'
+        + "".join(extras) + "</section>" if extras else ""
+    )
+    honors_nav = '<a href="#honors">Honors &amp; Awards</a>' if honors else ""
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -269,12 +322,12 @@ def render(profile):
     <div class="header-inner">
       <a class="site-name" href="#about">Homepage</a>
       <nav class="navigation" aria-label="Main navigation">
-        <a href="#about" aria-current="location">About Me</a>
+        <a href="#about" aria-current="location">About me</a>
         <a href="#news">News</a>
-        <a href="#publications">Publications</a>
-        <a href="#internships">Experience</a>
         <a href="#education">Education</a>
-        <a href="#honors">Honors and Awards</a>
+        {experience_nav}
+        <a href="#publications">Selected Preprints</a>
+        {honors_nav}
       </nav>
     </div>
   </header>
@@ -292,34 +345,25 @@ def render(profile):
     <main id="about-me" class="page-content">
       <section class="about-section" id="about" aria-labelledby="about-title">
         <div class="bio">
-          <h1 id="about-title">👋 About Me</h1>
-          <p class="intro-name">Hi! I'm <strong>{text(name)}</strong>.</p>
+          <h1 id="about-title">About Me</h1>
           <div class="about-copy">{paragraphs(profile.get("bio", []))}</div>
-          <div class="research-focus"><h2>Research focus</h2><ul>{focus}</ul></div>
+          <div class="research-focus"><h2>Research Interests:</h2><ul>{focus}</ul></div>
         </div>
       </section>
       <section class="news-section" id="news" aria-labelledby="news-title">
-        {heading("news", "🌟 News")}
+        {heading("news", "🔥 News")}
         {render_news(profile.get("news", []))}
       </section>
-      <section class="content-section" id="publications" aria-labelledby="publications-title">
-        {heading("publications", "📝 Publications")}
-        {render_publications(profile.get("publications", []))}
-      </section>
-      <section class="content-section" id="internships" aria-labelledby="internships-title">
-        {heading("internships", "💼 Experience")}
-        {render_experience(profile.get("experience", []))}
-      </section>
       <section class="content-section" id="education" aria-labelledby="education-title">
-        {heading("education", "🎓 Education")}
+        {heading("education", "📖 Education")}
         {render_education(profile.get("education", []))}
       </section>
-      <section class="content-section additional" id="additional" aria-label="Research interests, tools, and honors">
-        <div id="interests"><h2>🧭 Research Interests</h2><ul>{interests}</ul></div>
-        <div id="skills"><h2>🛠 Tools &amp; Frameworks</h2><p>{tools}</p>
-          <p class="subtle">From research ideas to reproducible systems.</p></div>
-        <div class="honors" id="honors"><h2 id="honors-title">🏆 Honors and Awards</h2>{honors_html}</div>
+      {experience_section}
+      <section class="content-section" id="publications" aria-labelledby="publications-title">
+        {heading("publications", "📝 Selected Preprints")}
+        {render_publications(profile.get("publications", []), name)}
       </section>
+      {extra_section}
       <footer><span class="personal-name">{text(name)} <span class="subtle">© <span data-current-year>{date.today().year}</span></span></span>
         <a href="#about">Back to top ↑</a></footer>
     </main>
@@ -363,7 +407,7 @@ def validate_profile(profile):
 def build(output):
     profile = json.loads((ROOT / "profile.json").read_text(encoding="utf-8"))
     validate_profile(profile)
-    markup = render(profile)
+    markup = "\n".join(line.rstrip() for line in render(profile).splitlines()) + "\n"
     output.mkdir(parents=True, exist_ok=True)
     (output / "index.html").write_text(markup, encoding="utf-8")
     if output.resolve() != ROOT:
