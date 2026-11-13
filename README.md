@@ -1,7 +1,7 @@
 # Personal Homepage
 
-Recorded homepage: [cloudsrise1.github.io](https://cloudsrise1.github.io/)
- | Source repository: [cloudsRise1/cloudsRise1.github.io](https://github.com/cloudsRise1/cloudsRise1.github.io)
+Homepage: [kunzejiang.github.io](https://kunzejiang.github.io/)
+ | Source repository: [kunzejiang/kunzejiang.github.io](https://github.com/kunzejiang/kunzejiang.github.io)
 
 A standalone static homepage for GitHub Pages, using native HTML, CSS, and
 JavaScript. `profile.json` stores the content, and `build.py` generates the
@@ -70,16 +70,18 @@ personal information. `.gitignore` is not a substitute for reviewing content.
 
 ## GitHub Pages
 
-The user requested `jiangkunze.github.io`. The main agent is investigating
-the GitHub account/repository namespace; this is a requested destination,
-not a confirmed current URL or a completed migration.
+The GitHub account is `kunzejiang`, and the user-site repository is
+`kunzejiang/kunzejiang.github.io`. The homepage URL is
+`https://kunzejiang.github.io/`, with no repository path.
 
-The current profile records `siteUrl: "https://cloudsrise1.github.io/"` and
-`githubUsername: "cloudsRise1"`. Keep `siteUrl` aligned with the actual
-published host, including any project path, and `githubUsername` aligned
-with the actual GitHub profile owner. Do not replace either field merely
-because a new hostname was requested. Update them only after the publishing
-destination and account ownership have been confirmed.
+The profile records `siteUrl: "https://kunzejiang.github.io/"` and
+`githubUsername: "kunzejiang"`. The generator uses these fields for the
+GitHub contact link, canonical URL, Open Graph URL, structured data,
+`robots.txt`, and `sitemap.xml`. Regenerate the site after updating either
+field.
+
+The local `origin` remote is
+`https://github.com/kunzejiang/kunzejiang.github.io.git`.
 
 GitHub Pages supports:
 
@@ -107,6 +109,6 @@ it can also be triggered with **Actions > Deploy GitHub Pages > Run workflow**.
 It uses `contents: read`, `pages: write`, and `id-token: write`, with deployment
 concurrency group `pages` and without canceling an active deployment.
 
-Namespace investigation and deployment changes belong to the main agent.
-This documentation revision does not create repositories, change Pages
-settings, build the site, or publish a migration.
+Pages publishes from `main` at the repository root, with HTTPS enabled and
+no custom-domain CNAME. The `kunzejiang.github.io` address comes from the
+account and repository names.

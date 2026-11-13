@@ -190,25 +190,25 @@ preserve the remaining profile fields and confirmed resource links.
 
 ## GitHub Pages Content
 
-The user requested `jiangkunze.github.io`; the main agent is investigating
-the account/repository namespace. That request is not confirmation of an
-active destination, account ownership, or a completed migration.
+The confirmed GitHub account is `kunzejiang`, the repository is
+`kunzejiang/kunzejiang.github.io`, and the homepage is
+`https://kunzejiang.github.io/`.
 
-The current profile records:
+The profile records:
 
 ```json
 {
-  "githubUsername": "cloudsRise1",
-  "siteUrl": "https://cloudsrise1.github.io/"
+  "githubUsername": "kunzejiang",
+  "siteUrl": "https://kunzejiang.github.io/"
 }
 ```
 
-`siteUrl` must reflect the actual published host. `githubUsername` must
-identify the actual GitHub profile owner, not a desired site name. Do not
-hardcode the requested hostname as the current URL or infer a new username
-from it. Change these values only when the actual account and published
-destination are confirmed. For a new profile with no confirmed destination,
-leave unknown values empty rather than guessing.
+`siteUrl` supplies the canonical URL, Open Graph URL, structured data,
+`robots.txt`, and `sitemap.xml`. `githubUsername` supplies the GitHub contact
+link and the GitHub profile URL in structured data. Keep both fields aligned
+with the account and published host, and regenerate the site after changing
+them. For a new profile with no confirmed destination, leave unknown values
+empty rather than guessing.
 
 - For a user site, the usual repository is `<username>.github.io` and the usual `siteUrl` is `https://<username>.github.io/`.
 - For a project site, the usual `siteUrl` is `https://<username>.github.io/<repository>/`, including the repository path.
@@ -227,6 +227,6 @@ leave unknown values empty rather than guessing.
 - Do not expect Research Experience to appear; keep `experience: []`.
 - Verify each added record and all public contact details.
 - Confirm permission and provenance for any local figure.
-- During an authorized implementation pass, validate the JSON and regenerate/preview with `build.py`; this documentation-only task runs no builds or tests.
-- Check `siteUrl` against the actual published host and `githubUsername` against the actual profile owner; leave the requested namespace pending until confirmed by the main agent.
+- Validate the JSON and regenerate/preview with `build.py` before publishing.
+- Check `siteUrl` against the published host and `githubUsername` against the actual profile owner.
 - Remove all illustrative placeholder records from publishable content.
